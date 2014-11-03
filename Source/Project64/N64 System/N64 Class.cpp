@@ -1073,7 +1073,7 @@ void CN64System::DumpSyncErrors (CN64System * SecondCPU) {
 		CLog Error;
 		Error.Open(ErrorFile);
 		Error.Log("Errors:\r\n");
-		Error.Log("Register,        Recompiler,         Interpter\r\n");
+		Error.Log("Register,        Recompiler,         Interpreter\r\n");
 	#ifdef TEST_SP_TRACKING
 		if (m_CurrentSP != GPR[29].UW[0]) {
 			Error.Log("m_CurrentSP,%X,%X\r\n",m_CurrentSP,GPR[29].UW[0]);

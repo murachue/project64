@@ -171,14 +171,14 @@ void Build_RSP ( void ) {
 
 /******************************************************************
   Function: DoRspCycles
-  Purpose:  This function is to allow the RSP to run in parrel with
+  Purpose:  This function is to allow the RSP to run in parallel with
             the r4300 switching control back to the r4300 once the
 			function ends.
-  input:    The number of cylces that is meant to be executed
+  input:    The number of cycles that is meant to be executed
   output:   The number of cycles that was executed. This value can
             be greater than the number of cycles that the RSP 
 			should have performed.
-			(this value is ignored if the RSP is stoped)
+			(this value is ignored if the RSP is stopped)
 *******************************************************************/ 
 
 DWORD RunInterpreterCPU(DWORD Cycles);

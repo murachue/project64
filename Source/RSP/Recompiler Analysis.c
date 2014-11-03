@@ -1002,7 +1002,7 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 				break;
 
 			default:
-			//	CompilerWarning("Unkown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
+			//	CompilerWarning("Unknown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
 			//	return FALSE;
 				break;
 			}
@@ -1076,7 +1076,7 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 					break;
 
 				default:
-				//	CompilerWarning("Unkown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
+				//	CompilerWarning("Unknown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
 				//	return FALSE;
 					break;
 				}
@@ -1100,7 +1100,7 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 		case RSP_SC2:
 			break;
 		default:
-		//	CompilerWarning("Unkown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
+		//	CompilerWarning("Unknown opcode in IsRegisterConstant\n%s",RSPOpcodeName(RspOp.Hex,PC));
 		//	return FALSE;
 			break;
 		}

@@ -774,7 +774,7 @@ void CompilerRSPBlock ( void ) {
 
 	CPU_Message("====== block %d ======", BlockID++);
 	CPU_Message("x86 code at: %X",RecompPos);
-	CPU_Message("Jumpt Table: %X",Table );
+	CPU_Message("Jump Table: %X",Table );
 	CPU_Message("Start of Block: %X",CurrentBlock.StartPC );
 	CPU_Message("====== recompiled code ======");
 

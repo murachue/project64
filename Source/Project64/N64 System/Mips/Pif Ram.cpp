@@ -173,7 +173,7 @@ void CPifRam::PifRamWrite (void) {
 			memset(m_PifRam,0,0x40);
 			break;
 		default:
-			if (bShowPifRamErrors()) { g_Notify->DisplayError("Unkown PifRam control: %d",m_PifRam[0x3F]); }
+			if (bShowPifRamErrors()) { g_Notify->DisplayError("Unknown PifRam control: %d",m_PifRam[0x3F]); }
 		}
 		return;
 	}
