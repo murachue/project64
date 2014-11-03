@@ -398,6 +398,9 @@ bool CN64Rom::LoadN64Image ( const char * FileLoc, bool LoadBootCodeOnly ) {
 				m_ROMImage        = Image; 
 				m_RomFileSize     = GetFileSize(hFile,NULL);
 			} else {
+				UnmapViewOfFile (Image);
+				CloseHandle(hFileMapping);
+				CloseHandle(hFile);
 				if (!AllocateAndLoadN64Image(FileLoc,LoadBootCodeOnly)) { return false; }
 			}
 		}
