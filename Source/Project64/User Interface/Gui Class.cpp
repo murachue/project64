@@ -310,7 +310,7 @@ void CMainGui::Caption (LPCSTR Caption) {
 }
 
 void CMainGui::Create (const char * WindowTitle) {
-	m_hMainWindow = (WND_HANDLE)CreateWindow ("Project64 2.0", WindowTitle, WS_OVERLAPPED | WS_CLIPCHILDREN | 
+	m_hMainWindow = (WND_HANDLE)CreateWindowEx (WS_EX_ACCEPTFILES, "Project64 2.0", WindowTitle, WS_OVERLAPPED | WS_CLIPCHILDREN | 
 		WS_CLIPSIBLINGS | WS_SYSMENU | WS_MINIMIZEBOX,5,5,640,480,
 		NULL,NULL,GetModuleHandle(NULL),this );
 }
@@ -874,6 +874,15 @@ DWORD CALLBACK CMainGui::MainGui_Proc (WND_HANDLE hWnd, DWORD uMsg, DWORD wParam
 		WriteTrace(TraceDebug,__FUNCTION__ ": WM_DESTROY - 4");
 		PostQuitMessage(0);
 		WriteTrace(TraceDebug,__FUNCTION__ ": WM_DESTROY - Done");
+		break;
+	case WM_DROPFILES:
+		{
+			HDROP hDrop = reinterpret_cast<HDROP>(wParam);
+			char fname[200]; // "200" from "Rom Browser.h"
+			DragQueryFile(hDrop, 0, fname, sizeof(fname));
+			DragFinish(hDrop);
+			g_BaseSystem->RunFileImage(fname);
+		}
 		break;
 	default:
 #ifdef BETA_RELEASE
