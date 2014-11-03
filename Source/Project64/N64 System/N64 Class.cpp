@@ -225,11 +225,22 @@ bool CN64System::RunFileImage ( const char * FileLoc )
 
 void CN64System::CloseSystem ( void ) 
 {
+	bool hasRunning = g_Settings->LoadBool(GameRunning_CPU_Running);
+
 	if (g_BaseSystem)
 	{
 		g_BaseSystem->CloseCpu(); 
 		delete g_BaseSystem;
 		g_BaseSystem = NULL;
+	}
+	if (g_Rom)
+	{
+		delete g_Rom;
+		g_Rom = NULL;
+
+		if(!hasRunning) {
+			g_Notify->DisplayMessage(1, MSG_ROM_CLOSED);
+		}
 	}
 }
 

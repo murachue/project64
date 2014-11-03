@@ -77,7 +77,16 @@ bool CMainMenu::ProcessMessage(WND_HANDLE hWnd, DWORD /*FromAccelerator*/, DWORD
 		break;
 	case ID_FILE_STARTEMULATION:
 		_Gui->SaveWindowLoc();
-		g_BaseSystem->StartEmulation(true);
+		if (g_BaseSystem) {
+			g_BaseSystem->StartEmulation(true);
+		} else {
+			// open most recent rom.
+			stdstr FileName;
+			if (g_Settings->LoadStringIndex(File_RecentGameFileIndex,0,FileName) && FileName.length() > 0)
+			{
+				g_BaseSystem->RunFileImage(FileName.c_str());
+			}
+		}
 		break;
 	case ID_FILE_ENDEMULATION: 
 		WriteTrace(TraceDebug,__FUNCTION__ ": ID_FILE_ENDEMULATION");
@@ -675,7 +684,7 @@ void CMainMenu::FillOutMenu ( MENU_HANDLE hMenu ) {
 	bool inBasicMode = g_Settings->LoadBool(UserInterface_BasicMode);
 	bool CPURunning  = g_Settings->LoadBool(GameRunning_CPU_Running);
 	bool RomLoading  = g_Settings->LoadBool(GameRunning_LoadingInProgress);
-	bool RomLoaded   = g_Settings->LoadString(Game_GameName).length() > 0;
+	bool RomLoaded   = !!g_Rom;
 	bool RomList     = g_Settings->LoadBool(RomBrowser_Enabled) && !CPURunning;
 	
 	CMenuShortCutKey::ACCESS_MODE AccessLevel = CMenuShortCutKey::GAME_NOT_RUNNING;
@@ -744,11 +753,11 @@ void CMainMenu::FillOutMenu ( MENU_HANDLE hMenu ) {
 		FileMenu.push_back(Item);
 		FileMenu.push_back(MENU_ITEM(SPLITER                    ));
 		Item.Reset(ID_FILE_STARTEMULATION,MENU_START,   m_ShortCuts.ShortCutString(ID_FILE_STARTEMULATION,AccessLevel)   );
-		Item.ItemEnabled = RomLoaded && !CPURunning;
+		Item.ItemEnabled = !CPURunning;
 		FileMenu.push_back(Item);
 	}
 	Item.Reset(ID_FILE_ENDEMULATION,  MENU_END,     m_ShortCuts.ShortCutString(ID_FILE_ENDEMULATION,AccessLevel)   );
-	Item.ItemEnabled = CPURunning;
+	Item.ItemEnabled = true;
 	FileMenu.push_back(Item);
 	FileMenu.push_back(MENU_ITEM(SPLITER                    ));
 	Item.Reset(SUB_MENU,              MENU_LANGUAGE, EMPTY_STDSTR,  &LangMenu );
