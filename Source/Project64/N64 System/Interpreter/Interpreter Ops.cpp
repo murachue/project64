@@ -184,7 +184,7 @@ R4300iOp::Func * R4300iOp::BuildInterpreter (void )
 	Jump_Special[10] = UnknownOpcode;
 	Jump_Special[11] = UnknownOpcode;
 	Jump_Special[12] = SPECIAL_SYSCALL;
-	Jump_Special[13] = UnknownOpcode;
+	Jump_Special[13] = SPECIAL_BREAK;
 	Jump_Special[14] = UnknownOpcode;
 	Jump_Special[15] = SPECIAL_SYNC;
 	Jump_Special[16] = SPECIAL_MFHI;
@@ -1521,6 +1521,8 @@ void R4300iOp::SPECIAL_SYSCALL (void) {
 }
 
 void R4300iOp::SPECIAL_BREAK (void) {
+	g_Notify->BreakPoint(__FILE__, __LINE__);
+
 	g_Reg->DoBreakException(m_NextInstruction == JUMP);
 	m_NextInstruction = JUMP;
 	m_JumpToLocation = (*_PROGRAM_COUNTER);

@@ -114,7 +114,7 @@ R4300iOp32::Func * R4300iOp32::BuildInterpreter (void )
 	Jump_Special[10] = R4300iOp::UnknownOpcode;
 	Jump_Special[11] = R4300iOp::UnknownOpcode;
 	Jump_Special[12] = R4300iOp::SPECIAL_SYSCALL;
-	Jump_Special[13] = R4300iOp::UnknownOpcode;
+	Jump_Special[13] = R4300iOp::SPECIAL_BREAK;
 	Jump_Special[14] = R4300iOp::UnknownOpcode;
 	Jump_Special[15] = R4300iOp::SPECIAL_SYNC;
 	Jump_Special[16] = R4300iOp::SPECIAL_MFHI;
