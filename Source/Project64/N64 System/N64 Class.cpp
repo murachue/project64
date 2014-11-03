@@ -201,9 +201,9 @@ bool CN64System::RunFileImage ( const char * FileLoc )
 		g_Notify->AddRecentRom(FileLoc);
 		g_Notify->SetWindowCaption(g_Settings->LoadString(Game_GoodName).c_str());
 
+		g_BaseSystem = new CN64System(g_Plugins,false);
 		if (g_Settings->LoadDword(Setting_AutoStart) != 0)
 		{
-			g_BaseSystem = new CN64System(g_Plugins,false);
 			if (g_BaseSystem)
 			{
 				g_BaseSystem->StartEmulation(true);
