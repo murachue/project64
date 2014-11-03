@@ -732,7 +732,7 @@ void RSP_Vector_VMACU (void) {
 		del = EleSpec[RSPOpC.rs].B[el];
 
 		temp.W = (long)RSP_Vect[RSPOpC.rd].HW[el] * (long)(DWORD)RSP_Vect[RSPOpC.rt].HW[del];
-		RSP_ACCUM[el].UHW[3] += (WORD)(temp.W >> 31);
+		RSP_ACCUM[el].UHW[3] = (RSP_ACCUM[el].UHW[3] + (WORD)(temp.W >> 31)) & 0xFFFF;
 		temp.UW = temp.UW << 1;
 		temp2.UW = temp.UHW[0] + RSP_ACCUM[el].UHW[1];
 		RSP_ACCUM[el].HW[1] = temp2.HW[0];
