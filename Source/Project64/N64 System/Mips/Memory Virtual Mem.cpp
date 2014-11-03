@@ -151,6 +151,7 @@ BOOL CMipsMemoryVM::Initialize ( void )
 	}
 	CPifRam::Reset();
 
+	// XXX: forgotten VA=FFFFF000 page?? (should be "0x100000 * sizeof(DWORD)")
 	m_TLB_ReadMap = (DWORD *)VirtualAlloc(NULL,0xFFFFF * sizeof(DWORD),MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
 	if (m_TLB_ReadMap == NULL) 
 	{
@@ -480,7 +481,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 			sprintf(VarName,"m_RDRAM + %X",PAddr);
 			MoveVariableToX86reg(PAddr + m_RDRAM,VarName,Reg); 
 			break;
-		case 0x04000000:
+		case 0x04000000: /* SP Registers */
 			if (PAddr < 0x04002000) { 
 				sprintf(VarName,"m_RDRAM + %X",PAddr);
 				MoveVariableToX86reg(PAddr + m_RDRAM,VarName,Reg); 
@@ -500,7 +501,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				if (g_Settings->LoadBool(Debugger_ShowUnhandledMemory)) { g_Notify->DisplayError(__FUNCTION__ "\nFailed to translate address: %X",VAddr); }
 			}
 			break;
-		case 0x04100000:
+		case 0x04100000: /* DP Command Registers */
 			{
 				static DWORD TempValue = 0;
 				BeforeCallDirect(m_RegWorkingSet);
@@ -512,7 +513,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				MoveVariableToX86reg(&TempValue,"TempValue",Reg);
 			}
 			break;
-		case 0x04300000:
+		case 0x04300000: /* MI Registers */
 			switch (PAddr) {
 			case 0x04300000: MoveVariableToX86reg(&g_Reg->MI_MODE_REG,"MI_MODE_REG",Reg); break;
 			case 0x04300004: MoveVariableToX86reg(&g_Reg->MI_VERSION_REG,"MI_VERSION_REG",Reg); break;
@@ -523,7 +524,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				if (g_Settings->LoadBool(Debugger_ShowUnhandledMemory)) { g_Notify->DisplayError(__FUNCTION__ "\nFailed to translate address: %X",VAddr); }
 			}
 			break;
-		case 0x04400000: 
+		case 0x04400000: /* VI Registers */
 			switch (PAddr) {
 			case 0x04400010:
 				m_RegWorkingSet.SetBlockCycleCount(m_RegWorkingSet.GetBlockCycleCount() - g_System->CountPerOp());
@@ -584,7 +585,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				if (g_Settings->LoadBool(Debugger_ShowUnhandledMemory)) { g_Notify->DisplayError(__FUNCTION__ "\nFailed to translate address: %X",VAddr); }
 			}
 			break;
-		case 0x04600000:
+		case 0x04600000: /* PI Registers */
 			switch (PAddr) {
 			case 0x04600010: MoveVariableToX86reg(&g_Reg->PI_STATUS_REG,"PI_STATUS_REG",Reg); break;
 			case 0x04600014: MoveVariableToX86reg(&g_Reg->PI_DOMAIN1_REG,"PI_DOMAIN1_REG",Reg); break;
@@ -600,7 +601,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				if (g_Settings->LoadBool(Debugger_ShowUnhandledMemory)) { g_Notify->DisplayError(__FUNCTION__ "\nFailed to translate address: %X",VAddr); }
 			}
 			break;
-		case 0x04700000:
+		case 0x04700000: /* RI Registers */
 			switch (PAddr) {
 			case 0x0470000C: MoveVariableToX86reg(&g_Reg->RI_SELECT_REG,"RI_SELECT_REG",Reg); break;
 			case 0x04700010: MoveVariableToX86reg(&g_Reg->RI_REFRESH_REG,"RI_REFRESH_REG",Reg); break;
@@ -609,7 +610,7 @@ void  CMipsMemoryVM::Compile_LW (x86Reg Reg, DWORD VAddr ) {
 				if (g_Settings->LoadBool(Debugger_ShowUnhandledMemory)) { g_Notify->DisplayError(__FUNCTION__ "\nFailed to translate address: %X",VAddr); }
 			}
 			break;
-		case 0x04800000:
+		case 0x04800000: /* SI Registers */
 			switch (PAddr) {
 			case 0x04800018: MoveVariableToX86reg(&g_Reg->SI_STATUS_REG,"SI_STATUS_REG",Reg); break;
 			default:
@@ -1479,7 +1480,7 @@ int CMipsMemoryVM::MemoryFilter( DWORD dwExptCode, void * lpExceptionPointer )
 	DWORD MemAddress = (char *)lpEP->ExceptionRecord->ExceptionInformation[1] - (char *)g_MMU->Rdram();
     if ((int)(MemAddress) < 0 || MemAddress > 0x1FFFFFFF) 
 	{ 
-//		if (bHaveDebugger()) { g_Notify->BreakPoint(__FILE__,__LINE__); }
+		if (bHaveDebugger()) { g_Notify->BreakPoint(__FILE__,__LINE__); }
 		return EXCEPTION_EXECUTE_HANDLER; 
 	}
 
@@ -1852,7 +1853,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 	}
 
 	switch (PAddr & 0xFFF00000) {
-	case 0x03F00000:
+	case 0x03F00000: /* RDRAM Registers */
 		switch (PAddr) {
 		case 0x03F00000: * Value = g_Reg->RDRAM_CONFIG_REG; break;
 		case 0x03F00004: * Value = g_Reg->RDRAM_DEVICE_ID_REG; break;
@@ -1869,7 +1870,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04000000:
+	case 0x04000000: /* SP Registers */
 		switch (PAddr) {
 		case 0x04040010: *Value = g_Reg->SP_STATUS_REG; break;
 		case 0x04040014: *Value = g_Reg->SP_DMA_FULL_REG; break;
@@ -1884,7 +1885,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04100000:
+	case 0x04100000: /* DP Command Registers */
 		switch (PAddr) {
 		case 0x0410000C: *Value = g_Reg->DPC_STATUS_REG; break;
 		case 0x04100010: *Value = g_Reg->DPC_CLOCK_REG; break;
@@ -1896,7 +1897,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04300000:
+	case 0x04300000: /* MI Registers */
 		switch (PAddr) {
 		case 0x04300000: * Value = g_Reg->MI_MODE_REG; break;
 		case 0x04300004: * Value = g_Reg->MI_VERSION_REG; break;
@@ -1907,7 +1908,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04400000:
+	case 0x04400000: /* VI Registers */
 		switch (PAddr) {
 		case 0x04400000: *Value = g_Reg->VI_STATUS_REG; break;
 		case 0x04400004: *Value = g_Reg->VI_ORIGIN_REG; break;
@@ -1931,7 +1932,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04500000:
+	case 0x04500000: /* AI Registers */
 		switch (PAddr) {
 		case 0x04500004: 
 			if (g_System->bFixedAudio())
@@ -1958,7 +1959,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04600000:
+	case 0x04600000: /* PI Registers */
 		switch (PAddr) {
 		case 0x04600010: *Value = g_Reg->PI_STATUS_REG; break;
 		case 0x04600014: *Value = g_Reg->PI_DOMAIN1_REG; break;
@@ -1974,7 +1975,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04700000:
+	case 0x04700000: /* RI Registers */
 		switch (PAddr) {
 		case 0x04700000: * Value = g_Reg->RI_MODE_REG; break;
 		case 0x04700004: * Value = g_Reg->RI_CONFIG_REG; break;
@@ -1989,7 +1990,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x04800000:
+	case 0x04800000: /* SI Registers */
 		switch (PAddr) {
 		case 0x04800018: *Value = g_Reg->SI_STATUS_REG; break;
 		default:
@@ -1997,11 +1998,11 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 			return FALSE;
 		}
 		break;
-	case 0x05000000:
+	case 0x05000000: /* Cartridge Domain 2 Address 1 (Some SRAM? Some ROMs read from here) */
 		*Value = PAddr & 0xFFFF;
 		*Value = (*Value << 16) | *Value;
 		return FALSE;
-	case 0x08000000:
+	case 0x08000000: /* Cartridge Domain 2 (SRAM) */
 		if (g_System->m_SaveUsing == SaveChip_Auto) { g_System->m_SaveUsing = SaveChip_FlashRam; }
 		if (g_System->m_SaveUsing != SaveChip_FlashRam) { 
 			*Value = PAddr & 0xFFFF;
@@ -2010,7 +2011,7 @@ int CMipsMemoryVM::LW_NonMemory ( DWORD PAddr, DWORD * Value ) {
 		}
 		*Value = ReadFromFlashStatus(PAddr);
 		break;
-	case 0x1FC00000:
+	case 0x1FC00000: /* PIF BootROM/RAM */
 		if (PAddr < 0x1FC007C0) {
 /*			DWORD ToSwap = *(DWORD *)(&PifRom[PAddr - 0x1FC00000]);
 			_asm {

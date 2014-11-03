@@ -21,10 +21,10 @@ public:
 		SoftResetTimer, 
 		ViTimer, 
 		AiTimerInterrupt, 
-		AiTimerBusy, 
-		AiTimerDMA, 
+		AiTimerBusy, // not used?
+		AiTimerDMA, // totally unused?
 		SiTimer, 
-		PiTimer, 
+		PiTimer, // not used?
 		RspTimer, 
 		RSPTimerDlist, 
 		MaxTimer
