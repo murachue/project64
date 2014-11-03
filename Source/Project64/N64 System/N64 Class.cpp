@@ -344,7 +344,7 @@ void  CN64System::StartEmulation2   ( bool NewThread )
 		Info->ThreadHandle = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartEmulationThread,Info,0, &Info->ThreadID);
 	} else {
 		//mark the emulation as starting and fix up menus
-		g_Notify->DisplayMessage(5,MSG_EMULATION_STARTED);
+		g_Notify->DisplayMessage(1,MSG_EMULATION_STARTED);
 
 		if (g_Settings->LoadBool(Setting_AutoFullscreen)) 
 		{
@@ -456,12 +456,12 @@ void CN64System::Pause(void)
 	ResetEvent(m_hPauseEvent);
 	g_Settings->SaveBool(GameRunning_CPU_Paused,true);
 	g_Notify->RefreshMenu();
-	g_Notify->DisplayMessage(5,MSG_CPU_PAUSED);
+	g_Notify->DisplayMessage(1,MSG_CPU_PAUSED);
 	WaitForSingleObject(m_hPauseEvent, INFINITE);
 	ResetEvent(m_hPauseEvent);
 	g_Settings->SaveBool(GameRunning_CPU_Paused,(DWORD)false);
 	g_Notify->RefreshMenu();
-	g_Notify->DisplayMessage(5,MSG_CPU_RESUMED);
+	g_Notify->DisplayMessage(1,MSG_CPU_RESUMED);
 }
 
 stdstr CN64System::ChooseFileToOpen ( WND_HANDLE hParent ) {
@@ -823,7 +823,7 @@ void CN64System::ExecuteCPU ( void )
 	//reset code
 	g_Settings->SaveBool(GameRunning_CPU_Running,true);
 	g_Settings->SaveBool(GameRunning_CPU_Paused,false);
-	g_Notify->DisplayMessage(5,MSG_EMULATION_STARTED);
+	g_Notify->DisplayMessage(1,MSG_EMULATION_STARTED);
 	
 	m_EndEmulation = false;
 	g_Notify->RefreshMenu();
