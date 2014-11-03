@@ -418,7 +418,7 @@ void CN64System::CloseCpu ( void )
 	g_Notify->DisplayMessage(0,MSG_WAITING_SHUTDOWN);
 
 	HANDLE hThread = m_CPU_Handle;
-	for (int count = 0; count < 200; count ++ ) 
+	for (int count = 0; count < 50; count ++ )
 	{
 		Sleep(100);
 		if (g_Notify->ProcessGuiMessages())
