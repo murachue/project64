@@ -243,6 +243,7 @@ void CN64Rom::CalculateCicChip ( void )
 	case 0x000000D6497E414B: m_CicChip = CIC_NUS_6103; break;
 	case 0x0000011A49F60E96: m_CicChip = CIC_NUS_6105; break;
 	case 0x000000D6D5BE5580: m_CicChip = CIC_NUS_6106; break;
+	case 0x000000C92ADFE50A: m_CicChip = CIC_NULL; break;
 	default:
 		m_CicChip = CIC_UNKNOWN; break;
 	}
