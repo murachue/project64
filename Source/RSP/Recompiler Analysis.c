@@ -1020,10 +1020,8 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 		case RSP_ADDIU:
 			if (RspOp.rt == Reg) {
 				if (RspOp.rs == 0) {
-					if (References > 0) {
-						return FALSE; 
-					}
-					Const = (short)RspOp.immediate;
+					if (References > 0) { return FALSE; }
+					Const = (WORD)RspOp.immediate;
 					References++;
 				} else {
 					return FALSE;
@@ -1032,7 +1030,7 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 			break;
 		case RSP_ORI:
 			if (RspOp.rt == Reg) {
-				if (!RspOp.rs) {
+				if (RspOp.rs == 0) {
 					if (References > 0) { return FALSE; }
 					Const = (WORD)RspOp.immediate;
 					References++;
@@ -1044,7 +1042,7 @@ BOOL IsRegisterConstant (DWORD Reg, DWORD * Constant) {
 		case RSP_LUI:
 			if (RspOp.rt == Reg) {
 				if (References > 0) { return FALSE; }
-				Const = (short)RspOp.offset << 16;
+				Const = (WORD)RspOp.offset << 16;
 				References++;
 			}
 			break;
