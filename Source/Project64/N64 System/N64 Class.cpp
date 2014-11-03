@@ -338,14 +338,10 @@ void  CN64System::StartEmulation2   ( bool NewThread )
 #endif
 
 		ThreadInfo * Info = new ThreadInfo;
-		HANDLE  * hThread = new HANDLE;
-		*hThread = NULL;
 
 		//create the needed info into a structure to pass as one parameter
 		//for creating a thread
-		Info->ThreadHandle = hThread;
-		
-		*hThread  = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartEmulationThread,Info,0, &Info->ThreadID);
+		Info->ThreadHandle = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)StartEmulationThread,Info,0, &Info->ThreadID);
 	} else {
 		//mark the emulation as starting and fix up menus
 		g_Notify->DisplayMessage(5,MSG_EMULATION_STARTED);
@@ -383,8 +379,7 @@ void CN64System::StartEmulationThread (  ThreadInfo * Info )
 {
 	CoInitialize(NULL);
 	
-	EmulationStarting(*Info->ThreadHandle,Info->ThreadID);
-	delete Info->ThreadHandle;
+	EmulationStarting(Info->ThreadHandle,Info->ThreadID);
 	delete Info;
 
 	CoUninitialize();

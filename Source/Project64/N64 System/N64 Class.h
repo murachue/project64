@@ -33,7 +33,7 @@ public:
     virtual ~CN64System ( void );
 
 	typedef struct {
-		HANDLE * ThreadHandle;
+		HANDLE   ThreadHandle;
 		DWORD    ThreadID;
 	} ThreadInfo;
 
