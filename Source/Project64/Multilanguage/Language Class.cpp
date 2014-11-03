@@ -460,6 +460,11 @@ void CLanguage::LoadDefaultStrings (void)
 	DEF_STR(MSG_SET_LLE_GFX_MSG,    "Low Level Graphics are not for general use!!!\nIt is advisable that you only use this for testing, not for playing any games with\n\nChange to LLE GFX?");
 	DEF_STR(MSG_SET_HLE_AUD_TITLE,  "Use High Level Audio");
 	DEF_STR(MSG_SET_HLE_AUD_MSG,    "High level Audio requires a 3rd party plugin!!!\nIf you do not use a 3rd party plugin that supports high level audio then you will hear no sound.\n\nUse high level audio?");
+	DEF_STR(MSG_LOADED_ROM,         "Loaded ROM");
+	DEF_STR(MSG_ROM_CLOSED,         "ROM closed");
+	DEF_STR(MSG_WAITING_SHUTDOWN,   "Waiting for shutting down emulation engine...");
+	DEF_STR(MSG_LOADED_ZIP_ROM,     "Loaded .zip ROM");
+	DEF_STR(MSG_LOADED_7Z_ROM,      "Loaded .7z ROM");
 }
 
 LRESULT CALLBACK LangSelectProc (HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);

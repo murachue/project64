@@ -505,6 +505,11 @@ enum LanguageStringID{
 	MSG_SET_LLE_GFX_MSG    = 2055,		//Added in pj64 1.7
 	MSG_SET_HLE_AUD_TITLE  = 2056,		//Added in pj64 1.7
 	MSG_SET_HLE_AUD_MSG    = 2057,		//Added in pj64 1.7
+	MSG_LOADED_ROM         = 2058,
+	MSG_ROM_CLOSED         = 2059,
+	MSG_WAITING_SHUTDOWN   = 2060,
+	MSG_LOADED_ZIP_ROM     = 2061,
+	MSG_LOADED_7Z_ROM      = 2062,
 };
 
 #include ".\\Multilanguage\Language Class.h"

@@ -96,7 +96,8 @@ bool CN64Rom::AllocateAndLoadN64Image ( const char * FileLoc, bool LoadBootCodeO
 	//Protect the memory so that it can not be written to.
 	DWORD OldProtect;
 	VirtualProtect(m_ROMImage,m_RomFileSize,PAGE_READONLY,&OldProtect);
-	
+	g_Notify->DisplayMessage(1,MSG_LOADED_ROM);
+
 	return true;
 }
 
@@ -181,7 +182,7 @@ bool CN64Rom::AllocateAndLoadZipImage ( const char * FileLoc, bool LoadBootCodeO
 			//Protect the memory so that it can not be written to.
 			DWORD OldProtect;
 			VirtualProtect(m_ROMImage,m_RomFileSize,PAGE_READONLY,&OldProtect);
-			g_Notify->DisplayMessage(1,"");
+			g_Notify->DisplayMessage(1,MSG_LOADED_ZIP_ROM);
 		}
 		unzCloseCurrentFile(file);
 		if (FoundRom == FALSE) {
@@ -342,6 +343,7 @@ bool CN64Rom::LoadN64Image ( const char * FileLoc, bool LoadBootCodeOnly ) {
 			//Protect the memory so that it can not be written to.
 			DWORD OldProtect;
 			VirtualProtect(m_ROMImage,m_RomFileSize,PAGE_READONLY,&OldProtect);
+			g_Notify->DisplayMessage(1,MSG_LOADED_7Z_ROM);
 	
 			Loaded7zFile = true;
 			break;

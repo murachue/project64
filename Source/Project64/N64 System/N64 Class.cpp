@@ -403,7 +403,9 @@ void CN64System::CloseCpu ( void )
 		ExternalEvent(SysEvent_CloseCPU);
 		return;
 	}
-	
+
+	g_Notify->DisplayMessage(0,MSG_WAITING_SHUTDOWN);
+
 	HANDLE hThread = m_CPU_Handle;
 	for (int count = 0; count < 200; count ++ ) 
 	{
