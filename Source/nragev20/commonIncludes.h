@@ -32,6 +32,7 @@
 #include <wtypes.h>
 #include "resource.h"
 #include "Debug.h"
+#include <stdio.h>
 
 #if SPECS_VERSION == 0x0100
 #include "./ControllerSpecs/Controller #1.0.h"

@@ -15,13 +15,14 @@
 
 #include <common/MemTest.h>
 #include <common/CriticalSection.h>
+#include <windows.h>
+#include <shellapi.h>
+#include <mmsystem.h>
 #include "Multilanguage.h"
 #include "User Interface.h"
 #include "N64 System.h"
 #include "Plugin.h"
 #include "Support.h"
-#include <windows.h>
-#include <mmsystem.h>
 #include "Validate Binary.h"
 #include <Aclapi.h>
 
