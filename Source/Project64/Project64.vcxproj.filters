@@ -426,6 +426,9 @@
     <ClCompile Include="3rd Party\zlib\zip.c">
       <Filter>Source Files\3rd Party Source\ZLib Source</Filter>
     </ClCompile>
+    <ClCompile Include="N64 System\Interpreter\GDB Stub.cpp">
+      <Filter>Source Files\N64 System Source\Interpreter Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="User Interface\Bitmaps\AboutScreen.bmp">
@@ -856,6 +859,9 @@
     </ClInclude>
     <ClInclude Include="3rd Party\zlib\ZLIB.H">
       <Filter>Header Files\3rd Party Headers\Zlib Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="N64 System\Interpreter\GDB Stub.h">
+      <Filter>Header Files\N64 System Headers\Interpreter Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

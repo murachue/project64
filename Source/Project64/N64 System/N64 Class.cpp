@@ -409,6 +409,8 @@ void CN64System::CloseCpu ( void )
 		SetEvent(m_hPauseEvent);
 	}
 	
+	CGDBStub::CloseWithSigkill();
+
 	if (GetCurrentThreadId() == m_CPU_ThreadID)
 	{
 		ExternalEvent(SysEvent_CloseCPU);

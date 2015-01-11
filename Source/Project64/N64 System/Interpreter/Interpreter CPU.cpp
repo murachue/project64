@@ -209,7 +209,12 @@ void CInterpreterCPU::InPermLoop (void) {
 		//CurrentFrame = 0;
 		//CurrentPercent = 0;
 		//DisplayFPS();
-		g_Notify->DisplayError(GS(MSG_PERM_LOOP));
+		if (bGDBStub())
+		{
+			CGDBStub::Enter(CGDBStub::REASON_PERMLOOP);
+		} else {
+			g_Notify->DisplayError(GS(MSG_PERM_LOOP));
+		}
 		g_System->CloseCpu();
 	} else {
 		if (*g_NextTimer > 0) {
@@ -229,11 +234,43 @@ void CInterpreterCPU::ExecuteCPU (void )
 	const BOOL & bDoSomething= g_SystemEvents->DoSomething();
 	DWORD CountPerOp         = g_System->CountPerOp();
 	int & NextTimer = *g_NextTimer;
+
+	if (bGDBStub())
+	{
+		if(!CGDBStub::Open())
+		{
+			if (!Done)
+			{
+				g_Notify->DisplayError("GDBStub: ExecuteCPU->Open: Failed. Emulation stop.");
+				ExitThread(0);
+			}
+			return;
+		}
+	}
 	
 	__try 
 	{
 		while(!Done)
 		{
+			if (bGDBStub())
+			{
+				if(!CGDBStub::Enter(CGDBStub::REASON_STEP))
+				{
+					if (!Done)
+					{
+						g_Notify->DisplayError("GDBStub: ExecuteCPU->Enter: Failed. Emulation stop.");
+						CGDBStub::Close();
+						ExitThread(0);
+					} else {
+						continue; // to exit this while-loop.
+					}
+				}
+				if (bDoSomething)
+				{
+					g_SystemEvents->ExecuteEvents();
+					continue;
+				}
+			}
 			if (g_MMU->LW_VAddr(PROGRAM_COUNTER, Opcode.Hex)) 
 			{
 				/*if (PROGRAM_COUNTER > 0x80000300 && PROGRAM_COUNTER< 0x80380000)
@@ -295,8 +332,10 @@ void CInterpreterCPU::ExecuteCPU (void )
 				R4300iOp::m_NextInstruction = NORMAL;
 			}
 		}
+		CGDBStub::CloseWithSigkill();
 	} __except( g_MMU->MemoryFilter( GetExceptionCode(), GetExceptionInformation()) ) {
 		g_Notify->DisplayError(GS(MSG_UNKNOWN_MEM_ACTION));
+		CGDBStub::Close();
 		ExitThread(0);
 	}
 }

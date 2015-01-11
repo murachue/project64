@@ -50,6 +50,7 @@ class CNotification;
 #include "N64 System/Interpreter/Interpreter Ops.h"
 #include "N64 System/Interpreter/Interpreter Ops 32.h"
 #include "N64 System/Interpreter/Interpreter CPU.h"
+#include "N64 System/Interpreter/GDB Stub.h"
 
 //Recompiler
 #include "N64 System/Recompiler/Recompiler Memory.h"

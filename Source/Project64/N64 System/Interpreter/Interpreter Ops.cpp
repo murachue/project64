@@ -1185,9 +1185,13 @@ void R4300iOp::SW (void) {
 	}
 	if (!g_MMU->SW_VAddr(Address,_GPR[m_Opcode.rt].UW[0])) 
 	{
-		if (bHaveDebugger()) 
+		if (bHaveDebugger() && !bGDBStub())
 		{
 			g_Notify->BreakPoint(__FILE__,__LINE__);
+		}
+		if (bGDBStub())
+		{
+			CGDBStub::Enter(CGDBStub::REASON_TLB);
 		}
 		if (bShowTLBMisses()) 
 		{
@@ -1521,11 +1525,29 @@ void R4300iOp::SPECIAL_SYSCALL (void) {
 }
 
 void R4300iOp::SPECIAL_BREAK (void) {
-	g_Notify->BreakPoint(__FILE__, __LINE__);
+	if (bGDBStub()) {
+		if(!CGDBStub::Enter(CGDBStub::REASON_TRAP))
+		{
+			if (!g_System->m_EndEmulation)
+			{
+				g_Notify->DisplayError("GDBStub: SPECIAL_BREAK->Open: Failed. Emulation stop.");
+			}
+			ExitThread(0);
+		}
+		// restart from current insn, except from delay-slot.
+		if (m_NextInstruction != JUMP)
+		{
+			CGDBStub::ResumeFromOp();
+			m_NextInstruction = JUMP;
+			m_JumpToLocation = (*_PROGRAM_COUNTER);
+		}
+	} else {
+		g_Notify->BreakPoint(__FILE__, __LINE__);
 
-	g_Reg->DoBreakException(m_NextInstruction == JUMP);
-	m_NextInstruction = JUMP;
-	m_JumpToLocation = (*_PROGRAM_COUNTER);
+		g_Reg->DoBreakException(m_NextInstruction == JUMP);
+		m_NextInstruction = JUMP;
+		m_JumpToLocation = (*_PROGRAM_COUNTER);
+	}
 }
 
 void R4300iOp::SPECIAL_SYNC (void) {

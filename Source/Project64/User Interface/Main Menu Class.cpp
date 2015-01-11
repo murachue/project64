@@ -27,6 +27,7 @@ CMainMenu::CMainMenu ( CMainGui * hMainWindow ):
 	m_ChangeSettingList.push_back(Debugger_AppLogLevel);
 	m_ChangeSettingList.push_back(Debugger_AppLogFlush);
 	m_ChangeSettingList.push_back(Debugger_GenerateDebugLog);
+	m_ChangeSettingList.push_back(Debugger_GDBStub);
 	m_ChangeSettingList.push_back(Game_CurrentSaveState);
 	m_ChangeSettingList.push_back(Setting_CurrentLanguage);
 
@@ -469,6 +470,9 @@ bool CMainMenu::ProcessMessage(WND_HANDLE hWnd, DWORD /*FromAccelerator*/, DWORD
 	case ID_DEBUGGER_INTERRUPT_VI: g_BaseSystem->ExternalEvent(SysEvent_Interrupt_VI); break;
 	case ID_DEBUGGER_INTERRUPT_PI: g_BaseSystem->ExternalEvent(SysEvent_Interrupt_PI); break;
 	case ID_DEBUGGER_INTERRUPT_DP: g_BaseSystem->ExternalEvent(SysEvent_Interrupt_DP); break;
+	case ID_DEBUGGER_GDBSTUB:
+		g_Settings->SaveBool(Debugger_GDBStub,!g_Settings->LoadBool(Debugger_GDBStub));
+		break;
 	case ID_CURRENT_SAVE_DEFAULT: 
 		Notify().DisplayMessage(3,"Save Slot (%s) selected",GetSaveSlotString(MenuID - ID_CURRENT_SAVE_DEFAULT).c_str());
 		g_Settings->SaveDword(Game_CurrentSaveState,(DWORD)(MenuID - ID_CURRENT_SAVE_DEFAULT)); 
@@ -1124,6 +1128,12 @@ void CMainMenu::FillOutMenu ( MENU_HANDLE hMenu ) {
 		DebugMenu.push_back(MENU_ITEM(SPLITER));
 		Item.Reset(ID_DEBUG_GENERATE_LOG_FILES,EMPTY_STRING,EMPTY_STDSTR,NULL,"Generate Log Files" );
 		if (g_Settings->LoadBool(Debugger_GenerateLogFiles)) { 
+			Item.ItemTicked = true;
+		}
+		DebugMenu.push_back(Item);
+		DebugMenu.push_back(MENU_ITEM(SPLITER));
+		Item.Reset(ID_DEBUGGER_GDBSTUB,EMPTY_STRING,EMPTY_STDSTR,NULL,"GDB Stub" );
+		if (g_Settings->LoadBool(Debugger_GDBStub)) {
 			Item.ItemTicked = true;
 		}
 		DebugMenu.push_back(Item);

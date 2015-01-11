@@ -22,6 +22,7 @@ public:
 	static inline bool  bLogX86Code ( void ) { return m_bLogX86Code; }
 	static inline bool  bShowTLBMisses ( void ) { return m_bShowTLBMisses; }
 	static inline bool  bShowDivByZero ( void ) { return m_bShowDivByZero; }
+	static inline bool  bGDBStub ( void ) { return m_bGDBStub; }
 
 private:
 	static void StaticRefreshSettings (CDebugSettings * _this) 
@@ -36,6 +37,7 @@ private:
 	static bool m_bLogX86Code;
 	static bool m_bShowTLBMisses;
 	static bool m_bShowDivByZero;
+	static bool m_bGDBStub;
 
 	static int  m_RefCount;
 	static bool m_Registered;

@@ -307,7 +307,7 @@ void CRegisters::CheckInterrupts ( void )
 
 void CRegisters::DoAddressError ( BOOL DelaySlot, DWORD BadVaddr, BOOL FromRead) 
 {
-	if (bHaveDebugger())
+	if (bHaveDebugger() && !bGDBStub())
 	{
 		g_Notify->DisplayError("AddressError");
 		if (( STATUS_REGISTER & STATUS_EXL  ) != 0 ) { 
@@ -316,6 +316,11 @@ void CRegisters::DoAddressError ( BOOL DelaySlot, DWORD BadVaddr, BOOL FromRead)
 		if (( STATUS_REGISTER & STATUS_ERL  ) != 0 ) { 
 			g_Notify->DisplayError("ERL set in AddressError Exception");
 		}
+	}
+
+	if (bGDBStub())
+	{
+		CGDBStub::Enter(CGDBStub::REASON_BUS);
 	}
 
 	if (FromRead) {
@@ -419,6 +424,11 @@ BOOL CRegisters::DoIntrException ( BOOL DelaySlot )
 
 void CRegisters::DoTLBReadMiss ( BOOL DelaySlot, DWORD BadVaddr ) 
 {
+	if (bGDBStub())
+	{
+		CGDBStub::Enter(CGDBStub::REASON_TLB);
+	}
+
 	CAUSE_REGISTER = EXC_RMISS;
 	BAD_VADDR_REGISTER = BadVaddr;
 	CONTEXT_REGISTER &= 0xFF80000F;

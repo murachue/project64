@@ -61,13 +61,13 @@
       <SubSystem>Windows</SubSystem>
       <FixedBaseAddress>true</FixedBaseAddress>
       <DataExecutionPrevention>false</DataExecutionPrevention>
-      <AdditionalDependencies>atlthunk.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>atlthunk.lib;htmlhelp.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Link>
       <DataExecutionPrevention>false</DataExecutionPrevention>
-      <AdditionalDependencies>atlthunk.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>atlthunk.lib;htmlhelp.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">
@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="N64 System\Interpreter\GDB Stub.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -244,6 +245,7 @@
   <ItemGroup>
     <ClInclude Include="Multilanguage.h" />
     <ClInclude Include="N64 System.h" />
+    <ClInclude Include="N64 System\Interpreter\GDB Stub.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />

@@ -215,6 +215,7 @@ enum SettingID {
 	Debugger_GenerateDebugLog,
 	Debugger_ShowDListAListCount,
 	Debugger_ShowRecompMemSize,
+	Debugger_GDBStub,
 
 #ifdef BETA_RELEASE
 	//Beta Information
