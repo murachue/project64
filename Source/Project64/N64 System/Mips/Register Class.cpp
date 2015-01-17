@@ -320,7 +320,10 @@ void CRegisters::DoAddressError ( BOOL DelaySlot, DWORD BadVaddr, BOOL FromRead)
 
 	if (bGDBStub())
 	{
-		CGDBStub::Enter(CGDBStub::REASON_BUS);
+		if (!CGDBStub::Enter(CGDBStub::REASON_BUS))
+		{
+			return;
+		}
 	}
 
 	if (FromRead) {
@@ -426,7 +429,10 @@ void CRegisters::DoTLBReadMiss ( BOOL DelaySlot, DWORD BadVaddr )
 {
 	if (bGDBStub())
 	{
-		CGDBStub::Enter(CGDBStub::REASON_TLB);
+		if (!CGDBStub::Enter(CGDBStub::REASON_TLB))
+		{
+			return;
+		}
 	}
 
 	CAUSE_REGISTER = EXC_RMISS;
