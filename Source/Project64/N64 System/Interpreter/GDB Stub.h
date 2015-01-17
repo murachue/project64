@@ -20,7 +20,7 @@ public:
 		REASON_PERMLOOP,
 	};
 
-	static bool Open ( void );
+	static bool Open ( bool breakAtStart );
 	static bool Enter ( REASON reason );
 	static void Close ( void );
 	static void CloseWithSigkill ( void );

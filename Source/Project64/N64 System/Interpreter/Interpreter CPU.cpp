@@ -237,7 +237,7 @@ void CInterpreterCPU::ExecuteCPU (void )
 
 	if (bGDBStub())
 	{
-		if(!CGDBStub::Open())
+		if(!CGDBStub::Open(bGDBStubBreakAtStart()))
 		{
 			if (!Done)
 			{

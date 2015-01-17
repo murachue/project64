@@ -56,7 +56,7 @@ bool CGDBStub::AcceptClient ( void )
 	return true;
 }
 
-bool CGDBStub::Open ( void )
+bool CGDBStub::Open ( bool breakAtStart )
 {
 	SOCKET gs;
 	sockaddr_in sin = { 0 };
@@ -99,12 +99,19 @@ bool CGDBStub::Open ( void )
 	}
 	m_ListenSocket = gs;
 
-	if (!AcceptClient())
+	if (breakAtStart)
 	{
-		return false;
-	}
+		if (!AcceptClient())
+		{
+			return false;
+		}
 
-	m_Stepping = 1; // break on top of boot.
+		// break on top of boot.
+		m_Stepping = 1;
+	} else {
+		// no break on top of boot.
+		m_Stepping = 0;
+	}
 
 	return true;
 }
@@ -806,6 +813,18 @@ bool CGDBStub::Enter ( REASON reason )
 		if (--m_Stepping)
 		{
 			return true;
+		}
+	}
+
+	if (m_Socket == INVALID_SOCKET)
+	{
+		if (!AcceptClient())
+		{
+			if (!g_System->m_EndEmulation)
+			{
+				g_Notify->DisplayError("GDBStub: Enter: Failed to accept client.");
+			}
+			return false;
 		}
 	}
 

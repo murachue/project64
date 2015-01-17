@@ -282,6 +282,7 @@ void CSettings::AddHowToHandleSetting ()
 	AddHandler(Debugger_AppLogFlush,            new CSettingTypeApplication("Logging","Log Auto Flush",(DWORD)false));
 	AddHandler(Debugger_GenerateLogFiles,       new CSettingTypeApplication("Debugger","Generate Log Files", false));
 	AddHandler(Debugger_GDBStub,                new CSettingTypeApplication("Debugger","GDB Stub", false));
+	AddHandler(Debugger_GDBStub_BreakAtStart,   new CSettingTypeApplication("Debugger","GDB Stub\\Break at start", true));
 
 
 #ifdef BETA_RELEASE

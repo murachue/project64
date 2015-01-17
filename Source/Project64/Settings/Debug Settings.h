@@ -23,6 +23,7 @@ public:
 	static inline bool  bShowTLBMisses ( void ) { return m_bShowTLBMisses; }
 	static inline bool  bShowDivByZero ( void ) { return m_bShowDivByZero; }
 	static inline bool  bGDBStub ( void ) { return m_bGDBStub; }
+	static inline bool  bGDBStubBreakAtStart ( void ) { return m_bGDBStub_BreakAtStart; }
 
 private:
 	static void StaticRefreshSettings (CDebugSettings * _this) 
@@ -38,6 +39,7 @@ private:
 	static bool m_bShowTLBMisses;
 	static bool m_bShowDivByZero;
 	static bool m_bGDBStub;
+	static bool m_bGDBStub_BreakAtStart;
 
 	static int  m_RefCount;
 	static bool m_Registered;
