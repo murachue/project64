@@ -569,6 +569,11 @@ void CN64System::Reset (bool bInitReg, bool ClearMenory)
 	{
 		m_SyncCPU->Reset(bInitReg,ClearMenory);
 	}
+
+	if (bGDBStub() && bGDBStubBreakAtStart())
+	{
+		CGDBStub::BreakAtNext();
+	}
 }
 
 bool CN64System::SetActiveSystem( bool bActive )

@@ -958,3 +958,8 @@ void CGDBStub::ResumeFromOp ( void )
 		m_Stepping = 2;
 	}
 }
+
+void CGDBStub::BreakAtNext ( void )
+{
+	m_Stepping = 1;
+}

@@ -25,6 +25,7 @@ public:
 	static void Close ( void );
 	static void CloseWithSigkill ( void );
 	static void ResumeFromOp ( void );
+	static void BreakAtNext ( void );
 
 private:
 	CGDBStub(void);							// Disable default constructor
