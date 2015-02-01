@@ -132,6 +132,10 @@ void CSystemEvents::ExecuteEvents ( void )
 				g_Settings->SaveBool(GameRunning_CPU_Paused,true);
 				g_Settings->SaveDword(GameRunning_CPU_PausedType, PauseType_FromMenu);
 				bPause = true;
+				/* Pausing explicitly means break when debugging with GDBStub. */
+				if (g_Settings->LoadBool(Debugger_GDBStub)) {
+					CGDBStub::BreakAtNext();
+				}
 			}
 			break;
 		case SysEvent_PauseCPU_AppLostFocus:
