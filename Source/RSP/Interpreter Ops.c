@@ -1495,8 +1495,7 @@ void RSP_Vector_VRCP (void) {
 			}
 		}
 		{
-			DWORD RoundMethod = _RC_CHOP;
-			DWORD OldModel = _controlfp(RoundMethod,  _MCW_RC);
+			DWORD OldModel = _controlfp(_RC_CHOP,  _MCW_RC);
 			RecpResult.W = (long)((0x7FFFFFFF / (double)RecpResult.W));
 			OldModel = _controlfp(OldModel,  _MCW_RC);
 		}
@@ -1603,8 +1602,7 @@ void RSP_Vector_VRSQ (void) {
 			}
 		}	
 		{
-			DWORD RoundMethod = _RC_CHOP;
-			DWORD OldModel = _controlfp(RoundMethod,  _MCW_RC);
+			DWORD OldModel = _controlfp(_RC_CHOP,  _MCW_RC);
 			SQrootResult.W = (long)(0x7FFFFFFF / sqrt(SQrootResult.W));
 			OldModel = _controlfp(OldModel,  _MCW_RC);
 		}
